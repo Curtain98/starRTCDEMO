@@ -8,7 +8,7 @@ Windowns-DEMO地址https://github.com/starrtc/starrtc-windows-demo.
 注意事项  
 #1.首先将c++源代码CVoipP2PDlg.h 改成了对应的TPVOIP_P2P.h,基本99%的代码不需要更改,大家可以直接参考  
 #2.利用dllexport 关键字开放几个函数给c#调用  
-#3.注释相关无用代码 入口处starrtcdemo.cpp文件里面注释以下代码,并将retrun FALSE改为return TRUE  
+#3.注释相关无用代码 入口处starrtcdemo.cpp文件里面注释以下代码,并将retrun FALSE改为return TRUE  (不修改则使用接口 将载入C++窗体 同时卡死程序)
 //CStarRTCMenuDialog dlg;  
 //m_pMainWnd = &dlg;  
 //INT_PTR nResponse = dlg.DoModal();  
@@ -28,4 +28,9 @@ Windowns-DEMO地址https://github.com/starrtc/starrtc-windows-demo.
 //	TRACE(traceAppMsg, 0, "警告: 如果您在对话框上使用 MFC 控件，则无法 #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS。\n");  
 //}  
 #4.配置属性 将项目默认值->配置类型 改为动态库(dll)  
-#5.c/c++ 里面的优化改为 已禁用 (/Od) 否则c#无法初始化类  
+#5.c/c++ 里面的优化改为 已禁用 (/Od) 否则c#无法初始化类
+****
+![Aaron Swartz](https://github.com/Curtain98/starRTCDEMO/blob/master/Csharpe/set.png)  
+![Aaron Swartz](https://github.com/Curtain98/starRTCDEMO/blob/master/Csharpe/set2.png)  
+![Aaron Swartz](https://github.com/Curtain98/starRTCDEMO/blob/master/Csharpe/code.png)  
+![Aaron Swartz](https://github.com/Curtain98/starRTCDEMO/blob/master/Csharpe/su.png)
