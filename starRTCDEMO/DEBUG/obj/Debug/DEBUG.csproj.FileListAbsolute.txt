@@ -1,0 +1,11 @@
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\bin\Debug\DEBUG.exe.config
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\bin\Debug\DEBUG.exe
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\bin\Debug\DEBUG.pdb
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\obj\Debug\DEBUG.Properties.Resources.resources
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\obj\Debug\DEBUG.csproj.GenerateResource.cache
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\obj\Debug\DEBUG.exe
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\obj\Debug\DEBUG.pdb
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\obj\Debug\DEBUG.csprojAssemblyReference.cache
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\obj\Debug\DEBUG.indexForm.resources
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\bin\Debug\ypVoip.dll
+C:\Users\Curtain\source\repos\starRTCDEMO\DEBUG\bin\Debug\ypVoip.lib

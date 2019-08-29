@@ -1,0 +1,11 @@
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\bin\Release\TP_VOIP.dll
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\bin\Release\TP_VOIP.lib
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\bin\Release\DEBUG.exe.config
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\bin\Release\DEBUG.exe
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\bin\Release\DEBUG.pdb
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\obj\Release\DEBUG.indexForm.resources
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\obj\Release\DEBUG.Properties.Resources.resources
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\obj\Release\DEBUG.csproj.GenerateResource.cache
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\obj\Release\DEBUG.csproj.CoreCompileInputs.cache
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\obj\Release\DEBUG.exe
+C:\Users\Curtain\Desktop\starRTCDEMO\DEBUG\obj\Release\DEBUG.pdb
