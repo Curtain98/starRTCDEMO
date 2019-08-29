@@ -1,4 +1,4 @@
-// TPVOIP_P2P.cpp: ÊµÏÖÎÄ¼ş
+// TPVOIP_P2P.cpp: å®ç°æ–‡ä»¶
 //
 
 #include "stdafx.h"
@@ -10,7 +10,7 @@
 #include<ws2tcpip.h>
 
 #pragma comment(lib, "ws2_32.lib ")  //linking to the library
-// TPVOIP_P2P ¶Ô»°¿ò
+// TPVOIP_P2P å¯¹è¯æ¡†
 
 
 TPVOIP_P2P::TPVOIP_P2P(CUserManager* pUserManager,char* LocaIP)
@@ -29,10 +29,10 @@ TPVOIP_P2P::TPVOIP_P2P(CUserManager* pUserManager,char* LocaIP)
 void TPVOIP_P2P::IPCall(char* AdmIP)
 {
 
-	RunMsg(1, "ÕıÔÚºô½Ğ");
+	RunMsg(1, "æ­£åœ¨å‘¼å«");
 	m_strAimIP = AdmIP;
 	
-	//ºô½Ğ¶Ô·½
+	//å‘¼å«å¯¹æ–¹
 	if (m_pVoipManager != NULL)
 	{
 		m_pVoipManager->call(m_strAimIP);
@@ -43,22 +43,11 @@ void TPVOIP_P2P::IPCall(char* AdmIP)
 
 	if (m_ShowLiveDlg.m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->addUser(m_strAimIP, true);
 		m_ShowLiveDlg.m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, true);
-		//m_ShowLiveDlg.m_pDataShowView->setShowPictures();
-		m_ShowLiveDlg.m_pDataShowView->changeShowStyle(m_pUserManager->m_ServiceParam.m_strUserId, false);
 		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
 	}
 
 	startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, false);
-
-	//ÉèÖÃ²åÈëÊı¾İ
-	m_bInsertData = true;
-	if (m_pSoundManager != NULL)
-	{
-		m_pSoundManager->startSoundData(true);
-	}
-	m_bConnect = true;
 
 
 }
@@ -80,7 +69,7 @@ BEGIN_MESSAGE_MAP(TPVOIP_P2P, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// TPVOIP_P2P ÏûÏ¢´¦Àí³ÌĞò
+// TPVOIP_P2P æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
 void TPVOIP_P2P::OnBnClickedButtonCalling()
@@ -89,14 +78,14 @@ void TPVOIP_P2P::OnBnClickedButtonCalling()
 	m_AimIP.GetAddress(nf1, nf2, nf3, nf4);
 	if (nf4 == 0)
 	{
-		AfxMessageBox("ÇëÈ·ÈÏ¶Ô·½IP");
+		AfxMessageBox("è¯·ç¡®è®¤å¯¹æ–¹IP");
 		return;
 	}
 	CString str;
-	str.Format("%d.%d.%d.%d", nf1, nf2, nf3, nf4);//ÕâÀïµÄnfµÃµ½µÄÖµÊÇIPÖµÁË. 
+	str.Format("%d.%d.%d.%d", nf1, nf2, nf3, nf4);//è¿™é‡Œçš„nfå¾—åˆ°çš„å€¼æ˜¯IPå€¼äº†. 
 	m_strAimIP = str.GetBuffer(0);
 
-	//ºô½Ğ¶Ô·½
+	//å‘¼å«å¯¹æ–¹
 	if (m_pVoipManager != NULL)
 	{
 		m_pVoipManager->call(m_strAimIP);
@@ -160,27 +149,28 @@ BOOL TPVOIP_P2P::OnInitDialog()
 	m_AimIP.SetAddress(val1, val2, val3, 0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-				  // Òì³£: OCX ÊôĞÔÒ³Ó¦·µ»Ø FALSE
+				  // å¼‚å¸¸: OCX å±æ€§é¡µåº”è¿”å› FALSE
 }
 
 
 // voip callback
 /**
- * ±»½Ğ·½ÏìÓ¦
- * ±»½Ğ·½ÊÕµ½Ö÷½Ğ·½µÄºô½Ğ
+ * è¢«å«æ–¹å“åº”
+ * è¢«å«æ–¹æ”¶åˆ°ä¸»å«æ–¹çš„å‘¼å«
  * @param fromID
  */
 void TPVOIP_P2P::onCalling(string fromID)
 {
 	
+	CString str;
+	str.Format("æ˜¯å¦åŒæ„ç”¨æˆ·:%sè¯·æ±‚è§†é¢‘é€šè¯", fromID.c_str());
+	if (IDYES == AfxMessageBox(str, MB_YESNO))
+	{
 		m_strAimIP = fromID;
-		startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
 		CRect rect;
 		::GetWindowRect(this->m_hWnd, rect);
-		m_ShowLiveDlg.MoveWindow(CRect(100, 100, 400, 400), true);
-
-		//m_ShowLiveDlg.ShowWindow(SW_SHOW);
-
+		m_ShowLiveDlg.MoveWindow(CRect(rect.right, rect.top, rect.right + rect.Width() / 2, rect.bottom), true);
+		m_ShowLiveDlg.ShowWindow(SW_SHOW);
 		m_pVoipManager->accept(fromID);
 		m_bConnect = true;
 
@@ -191,22 +181,27 @@ void TPVOIP_P2P::onCalling(string fromID)
 			m_ShowLiveDlg.m_pDataShowView->setShowPictures();
 		}
 
-		
+		startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
 		if (m_pSoundManager != NULL)
 		{
 			m_pSoundManager->startSoundData(true);
 		}
+	}
+	else
+	{
+		m_pVoipManager->refuse();
+	}
 
 }
 
 /**
- * ±»½Ğ·½ÏìÓ¦
- * Ö÷½Ğ·½ÔÚ±»½Ğ·½½ÓÌıÖ®Ç°¹Ò¶Ï£¨Í¨»°±»È¡Ïû£©
+ * è¢«å«æ–¹å“åº”
+ * ä¸»å«æ–¹åœ¨è¢«å«æ–¹æ¥å¬ä¹‹å‰æŒ‚æ–­ï¼ˆé€šè¯è¢«å–æ¶ˆï¼‰
  * @param fromID
  */
 void TPVOIP_P2P::onCancled(string fromID)
 {
-	AfxMessageBox("Ö÷½Ğ·½ÔÚ±»½Ğ·½½ÓÌıÖ®Ç°¹Ò¶Ï£¨Í¨»°±»È¡Ïû£©");
+	AfxMessageBox("ä¸»å«æ–¹åœ¨è¢«å«æ–¹æ¥å¬ä¹‹å‰æŒ‚æ–­ï¼ˆé€šè¯è¢«å–æ¶ˆï¼‰");
 	stopGetData();
 	if (m_ShowLiveDlg.m_pDataShowView != NULL)
 	{
@@ -217,8 +212,8 @@ void TPVOIP_P2P::onCancled(string fromID)
 }
 
 /**
- * Ö÷½Ğ·½ÏìÓ¦
- * ±»½Ğ·½¾Ü¾ø½ÓÍ¨£¨Í¨»°±»¾Ü¾ø£©
+ * ä¸»å«æ–¹å“åº”
+ * è¢«å«æ–¹æ‹’ç»æ¥é€šï¼ˆé€šè¯è¢«æ‹’ç»ï¼‰
  * @param fromID
  */
 void TPVOIP_P2P::onRefused(string fromID)
@@ -230,7 +225,7 @@ void TPVOIP_P2P::onRefused(string fromID)
 		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
 	}
 	m_ShowLiveDlg.ShowWindow(SW_HIDE);
-	AfxMessageBox("¶Ô·½¾Ü¾ø½ÓÍ¨");
+	AfxMessageBox("å¯¹æ–¹æ‹’ç»æ¥é€š");
 
 	m_bConnect = false;
 	m_pSoundManager = new CSoundManager(this);
@@ -239,13 +234,13 @@ void TPVOIP_P2P::onRefused(string fromID)
 }
 
 /**
- * Ö÷½Ğ·½ÏìÓ¦
- * ±»½Ğ·½ÏßÂ·Ã¦£¨¶Ô·½Í¨»°ÖĞ£©
+ * ä¸»å«æ–¹å“åº”
+ * è¢«å«æ–¹çº¿è·¯å¿™ï¼ˆå¯¹æ–¹é€šè¯ä¸­ï¼‰
  * @param fromID
  */
 void TPVOIP_P2P::onBusy(string fromID)
 {
-	//¹Ø±Õ
+	//å…³é—­
 	stopGetData();
 	if (m_ShowLiveDlg.m_pDataShowView != NULL)
 	{
@@ -253,35 +248,35 @@ void TPVOIP_P2P::onBusy(string fromID)
 		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
 	}
 	m_ShowLiveDlg.ShowWindow(SW_HIDE);
-	AfxMessageBox("¶Ô·½ÏßÂ·Ã¦");
+	AfxMessageBox("å¯¹æ–¹çº¿è·¯å¿™");
 }
 
 /**
- * Ö÷½Ğ·½ÏìÓ¦
- * ±»½Ğ·½½ÓÍ¨£¨Í¨»°¿ªÊ¼£©
+ * ä¸»å«æ–¹å“åº”
+ * è¢«å«æ–¹æ¥é€šï¼ˆé€šè¯å¼€å§‹ï¼‰
  * @param fromID
  */
 void TPVOIP_P2P::onConnected(string fromID)
 {
-	////Ìí¼ÓÏÔÊ¾¶Ô·½½çÃæ
-	//if (m_ShowLiveDlg.m_pDataShowView != NULL)
-	//{
-	//	m_strAimIP = fromID;
-	//	m_ShowLiveDlg.m_pDataShowView->addUser(fromID, true);
-	//	m_ShowLiveDlg.m_pDataShowView->changeShowStyle(m_pUserManager->m_ServiceParam.m_strUserId, false);
-	//	m_ShowLiveDlg.m_pDataShowView->setShowPictures();
-	//}
-	////ÉèÖÃ²åÈëÊı¾İ
-	//m_bInsertData = true;
-	//if (m_pSoundManager != NULL)
-	//{
-	//	m_pSoundManager->startSoundData(true);
-	//}
-	//m_bConnect = true;
+	//æ·»åŠ æ˜¾ç¤ºå¯¹æ–¹ç•Œé¢
+	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	{
+		m_strAimIP = fromID;
+		m_ShowLiveDlg.m_pDataShowView->addUser(fromID, true);
+		m_ShowLiveDlg.m_pDataShowView->changeShowStyle(m_pUserManager->m_ServiceParam.m_strUserId, false);
+		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+	}
+	//è®¾ç½®æ’å…¥æ•°æ®
+	m_bInsertData = true;
+	if (m_pSoundManager != NULL)
+	{
+		m_pSoundManager->startSoundData(true);
+	}
+	m_bConnect = true;
 }
 
 /**
- * ¶Ô·½ÒÑ¾­¹Ò¶Ï
+ * å¯¹æ–¹å·²ç»æŒ‚æ–­
  * @param fromID
  */
 void TPVOIP_P2P::onHangup(string fromID)
@@ -313,12 +308,12 @@ void TPVOIP_P2P::onHangup(string fromID)
 }
 
 /**
- * voip±¨´í
+ * voipæŠ¥é”™
  * @param errorCode
  */
 void TPVOIP_P2P::onError(string errorCode)
 {
-	//¿ªÆô×Ô¼º
+	//å¼€å¯è‡ªå·±
 	stopGetData();
 	if (m_pSoundManager != NULL)
 	{
@@ -333,7 +328,7 @@ void TPVOIP_P2P::onError(string errorCode)
 		m_ShowLiveDlg.m_pDataShowView->removeAllUser();
 	}
 	m_ShowLiveDlg.ShowWindow(SW_HIDE);
-	//¶Ï¿ªÁ¬½Ó
+	//æ–­å¼€è¿æ¥
 	CString strErr;
 	strErr.Format("err:%s", errorCode.c_str());
 	AfxMessageBox(strErr);
@@ -341,7 +336,7 @@ void TPVOIP_P2P::onError(string errorCode)
 }
 
 /**
- * ÊÕµ½ÊµÊ±Êı¾İ
+ * æ”¶åˆ°å®æ—¶æ•°æ®
  * @param data
  */
 void TPVOIP_P2P::onReceiveRealtimeData(uint8_t* data, int length)
