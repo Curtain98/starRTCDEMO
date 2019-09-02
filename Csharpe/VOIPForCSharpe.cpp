@@ -43,9 +43,9 @@ void IPCall(char* AdmIP)
 {
 	P2P->IPCall(AdmIP);
 }
-void IPCallMsg(char* AdmIP)
+void accept(char* AdmIP)
 {
-	P2P->IPCallOutMsg(AdmIP);
+	P2P->IPaccept(AdmIP);
 }
 
 
