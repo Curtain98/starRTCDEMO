@@ -8,21 +8,21 @@
 #include "BackMsgEntity.h"
 
 using namespace std;
-// TPVOIP_P2P å¯¹è¯æ¡†
+// TPVOIP_P2P ¶Ô»°¿ò
 
 class TPVOIP_P2P : public CDialogEx, public CLocalDataControl, public IVoipP2PManagerListener, public CPicControlCallback, public IShowLiveCallback, public ISoundCallback
 {
 public:
-	TPVOIP_P2P(CUserManager* pUserManager,char* LocaIP);   // æ ‡å‡†æ„é€ å‡½æ•°
+	TPVOIP_P2P(CUserManager* pUserManager,char* LocaIP);   // ±ê×¼¹¹Ôìº¯Êı
 	virtual ~TPVOIP_P2P();
 
-	// å¯¹è¯æ¡†æ•°æ®
+	// ¶Ô»°¿òÊı¾İ
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG_VOIP_P2P };
 #endif
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -33,59 +33,59 @@ public:
 public:
 
 	/**
-	 * è¢«å«æ–¹å“åº”
-	 * è¢«å«æ–¹æ”¶åˆ°ä¸»å«æ–¹çš„å‘¼å«
+	 * ±»½Ğ·½ÏìÓ¦
+	 * ±»½Ğ·½ÊÕµ½Ö÷½Ğ·½µÄºô½Ğ
 	 * @param fromID
 	 */
 	virtual void onCalling(string fromID);
 	/**
-	 * è¢«å«æ–¹å“åº”
-	 * ä¸»å«æ–¹åœ¨è¢«å«æ–¹æ¥å¬ä¹‹å‰æŒ‚æ–­ï¼ˆé€šè¯è¢«å–æ¶ˆï¼‰
+	 * ±»½Ğ·½ÏìÓ¦
+	 * Ö÷½Ğ·½ÔÚ±»½Ğ·½½ÓÌıÖ®Ç°¹Ò¶Ï£¨Í¨»°±»È¡Ïû£©
 	 * @param fromID
 	 */
 	virtual void onCancled(string fromID);
 
 	/**
-	 * ä¸»å«æ–¹å“åº”
-	 * è¢«å«æ–¹æ‹’ç»æ¥é€šï¼ˆé€šè¯è¢«æ‹’ç»ï¼‰
+	 * Ö÷½Ğ·½ÏìÓ¦
+	 * ±»½Ğ·½¾Ü¾ø½ÓÍ¨£¨Í¨»°±»¾Ü¾ø£©
 	 * @param fromID
 	 */
 	virtual void onRefused(string fromID);
 
 	/**
-	 * ä¸»å«æ–¹å“åº”
-	 * è¢«å«æ–¹çº¿è·¯å¿™ï¼ˆå¯¹æ–¹é€šè¯ä¸­ï¼‰
+	 * Ö÷½Ğ·½ÏìÓ¦
+	 * ±»½Ğ·½ÏßÂ·Ã¦£¨¶Ô·½Í¨»°ÖĞ£©
 	 * @param fromID
 	 */
 	virtual void onBusy(string fromID);
 
 	/**
-	 * ä¸»å«æ–¹å“åº”
-	 * è¢«å«æ–¹æ¥é€šï¼ˆé€šè¯å¼€å§‹ï¼‰
+	 * Ö÷½Ğ·½ÏìÓ¦
+	 * ±»½Ğ·½½ÓÍ¨£¨Í¨»°¿ªÊ¼£©
 	 * @param fromID
 	 */
 	virtual void onConnected(string fromID);
 
 	/**
-	 * å¯¹æ–¹å·²ç»æŒ‚æ–­
+	 * ¶Ô·½ÒÑ¾­¹Ò¶Ï
 	 * @param fromID
 	 */
 	virtual void onHangup(string fromID);
 
 	/**
-	 * voipæŠ¥é”™
+	 * voip±¨´í
 	 * @param errorCode
 	 */
 	virtual void onError(string errorCode);
 
 	/**
-	 * æ”¶åˆ°å®æ—¶æ•°æ®
+	 * ÊÕµ½ÊµÊ±Êı¾İ
 	 * @param data
 	 */
 	virtual void onReceiveRealtimeData(uint8_t* data, int length);
 
 	/**
-	 * æ”¶åˆ°è§†é¢‘æ•°æ®
+	 * ÊÕµ½ÊÓÆµÊı¾İ
 	 * @param data
 	 */
 	virtual int getVideoRaw(string strUserId, int w, int h, uint8_t* videoData, int videoDataLen);
