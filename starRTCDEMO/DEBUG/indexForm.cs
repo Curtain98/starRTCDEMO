@@ -43,6 +43,9 @@ namespace DEBUG
         [DllImport("TP_VOIP.dll", EntryPoint = "BackMsg", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void BackMsg();
 
+        [DllImport("TP_VOIP.dll", EntryPoint = "accept", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void accept(string AdmIP);
+
         public indexForm()
         {
             InitializeComponent();
@@ -114,6 +117,11 @@ namespace DEBUG
         private void button5_Click(object sender, EventArgs e)
         {
             BackMsg();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            accept(textBox1.Text);
         }
     }
 }

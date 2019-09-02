@@ -12,8 +12,6 @@ using namespace std;
 
 class TPVOIP_P2P : public CDialogEx, public CLocalDataControl, public IVoipP2PManagerListener, public CPicControlCallback, public IShowLiveCallback, public ISoundCallback
 {
-	//DECLARE_DYNAMIC(TPVOIP_P2P)
-
 public:
 	TPVOIP_P2P(CUserManager* pUserManager,char* LocaIP);   // 标准构造函数
 	virtual ~TPVOIP_P2P();
@@ -28,8 +26,9 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void IPCall(char* AdmIP);
-	afx_msg void OnBnClickedButtonCalling();
+	 void IPaccept(char* AdmIP);
+	 void IPCall(char* AdmIP);
+	 void OnBnClickedButtonCalling();
 	virtual BOOL OnInitDialog();
 public:
 
@@ -111,6 +110,6 @@ private:
 	CUserManager* m_pUserManager;
 	XHVoipP2PManager* m_pVoipManager;
 	CSoundManager* m_pSoundManager;
-	CShowLiveDlg m_ShowLiveDlg;
+	CShowLiveDlg* m_ShowLiveDlg;
 	bool m_bConnect;
 };

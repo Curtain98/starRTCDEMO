@@ -13,41 +13,46 @@
 // TPVOIP_P2P 对话框
 
 
-TPVOIP_P2P::TPVOIP_P2P(CUserManager* pUserManager,char* LocaIP)
+TPVOIP_P2P::TPVOIP_P2P(CUserManager* pUserManager, char* LocaIP)
 {
 	m_strAimIP = "";
 	m_strLocalIP = LocaIP;
 	m_pUserManager = pUserManager;
 	m_pVoipManager = new XHVoipP2PManager(this);
-	m_ShowLiveDlg.addPictureControlListener(this);
-	m_ShowLiveDlg.addShowLiveListener(this);
+	m_pVoipManager->setUserId(m_strLocalIP);
 	m_bConnect = false;
 	m_pSoundManager = new CSoundManager(this);
-	m_ShowLiveDlg.Create(IDD_DIALOG_SHOW_LIVE, this);
-	m_pVoipManager->setUserId(m_strLocalIP);
+
+	if (m_ShowLiveDlg == NULL) {
+		m_ShowLiveDlg = new CShowLiveDlg();
+		m_ShowLiveDlg->addPictureControlListener(this);
+		m_ShowLiveDlg->addShowLiveListener(this);
+		m_ShowLiveDlg->Create(IDD_DIALOG_SHOW_LIVE, AfxGetMainWnd());
+		//m_ShowLiveDlg->Create(IDD_DIALOG_SHOW_LIVE, this);
+	}
 }
+
+int acceptNumber = 0;
 void TPVOIP_P2P::IPCall(char* AdmIP)
 {
-
+	acceptNumber = 0;
 	RunMsg(1, "正在呼叫");
 	m_strAimIP = AdmIP;
-	
+
 	//呼叫对方
 	if (m_pVoipManager != NULL)
 	{
 		m_pVoipManager->call(m_strAimIP);
 	}
 
-	m_ShowLiveDlg.MoveWindow(CRect(100, 100, 400, 400), true);
-	m_ShowLiveDlg.ShowWindow(SW_SHOW);
+	m_ShowLiveDlg->MoveWindow(CRect(100, 100, 400, 400), true);
+	m_ShowLiveDlg->ShowWindow(SW_SHOW);
 
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->addUser(m_strAimIP, true);
-		m_ShowLiveDlg.m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, true);
-		//m_ShowLiveDlg.m_pDataShowView->setShowPictures();
-		m_ShowLiveDlg.m_pDataShowView->changeShowStyle(m_pUserManager->m_ServiceParam.m_strUserId, false);
-		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+		m_ShowLiveDlg->m_pDataShowView->addUser(m_strAimIP, true);
+		m_ShowLiveDlg->m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, true);
+		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 	}
 
 	startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, false);
@@ -60,7 +65,14 @@ void TPVOIP_P2P::IPCall(char* AdmIP)
 	}
 	m_bConnect = true;
 
+}
 
+void TPVOIP_P2P::IPaccept(char* AdmIP)
+{
+	//添加显示对方界面
+	
+		RunMsg(1, "调用accept");
+		m_pVoipManager->accept(m_strAimIP);
 }
 
 TPVOIP_P2P::~TPVOIP_P2P()
@@ -100,17 +112,18 @@ void TPVOIP_P2P::OnBnClickedButtonCalling()
 	if (m_pVoipManager != NULL)
 	{
 		m_pVoipManager->call(m_strAimIP);
+		//m_pVoipManager->accept(m_strAimIP);
 	}
 
 	CRect rect;
 	::GetWindowRect(this->m_hWnd, rect);
-	m_ShowLiveDlg.MoveWindow(CRect(rect.left - 100, rect.top - 200, rect.right + 100, rect.bottom + 200), true);
-	m_ShowLiveDlg.ShowWindow(SW_SHOW);
+	m_ShowLiveDlg->MoveWindow(CRect(rect.left - 100, rect.top - 200, rect.right + 100, rect.bottom + 200), true);
+	m_ShowLiveDlg->ShowWindow(SW_SHOW);
 
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, true);
-		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+		m_ShowLiveDlg->m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, true);
+		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 	}
 
 	startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, false);
@@ -121,7 +134,7 @@ BOOL TPVOIP_P2P::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	m_ShowLiveDlg.Create(IDD_DIALOG_SHOW_LIVE, this);
+	m_ShowLiveDlg->Create(IDD_DIALOG_SHOW_LIVE, this);
 	WSADATA wsaData = { 0 };
 	if (WSAStartup(MAKEWORD(2, 1), &wsaData) == 0)
 	{
@@ -172,31 +185,37 @@ BOOL TPVOIP_P2P::OnInitDialog()
  */
 void TPVOIP_P2P::onCalling(string fromID)
 {
-	
+	CString str;
+	str.Format("是否同意用户:%s请求视频通话", fromID.c_str());
+	if (IDYES == AfxMessageBox(str, MB_YESNO))
+	{
 		m_strAimIP = fromID;
-		startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
 		CRect rect;
 		::GetWindowRect(this->m_hWnd, rect);
-		m_ShowLiveDlg.MoveWindow(CRect(100, 100, 400, 400), true);
-
-		//m_ShowLiveDlg.ShowWindow(SW_SHOW);
-
-		m_pVoipManager->accept(fromID);
+		m_ShowLiveDlg->MoveWindow(CRect(100,100,400,400), true);
+		m_ShowLiveDlg->ShowWindow(SW_SHOW);
 		m_bConnect = true;
 
-		if (m_ShowLiveDlg.m_pDataShowView != NULL)
+		RunMsg(1, "收到请求 已同意 正在建立连接");
+		m_pVoipManager->accept(m_strAimIP);
+
+		if (m_ShowLiveDlg->m_pDataShowView != NULL)
 		{
-			m_ShowLiveDlg.m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, false);
-			m_ShowLiveDlg.m_pDataShowView->addUser(fromID, true);
-			m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+			m_ShowLiveDlg->m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, false);
+			m_ShowLiveDlg->m_pDataShowView->addUser(m_strAimIP, true);
+			m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 		}
 
-		
+		startGetData((CROP_TYPE)m_pUserManager->m_ServiceParam.m_CropType, true);
 		if (m_pSoundManager != NULL)
 		{
 			m_pSoundManager->startSoundData(true);
 		}
-
+	}
+	else
+	{
+		m_pVoipManager->refuse();
+	}
 }
 
 /**
@@ -208,12 +227,12 @@ void TPVOIP_P2P::onCancled(string fromID)
 {
 	AfxMessageBox("主叫方在被叫方接听之前挂断（通话被取消）");
 	stopGetData();
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->removeAllUser();
-		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+		m_ShowLiveDlg->m_pDataShowView->removeAllUser();
+		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 	}
-	m_ShowLiveDlg.ShowWindow(SW_HIDE);
+	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 }
 
 /**
@@ -224,12 +243,12 @@ void TPVOIP_P2P::onCancled(string fromID)
 void TPVOIP_P2P::onRefused(string fromID)
 {
 	stopGetData();
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->removeAllUser();
-		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+		m_ShowLiveDlg->m_pDataShowView->removeAllUser();
+		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 	}
-	m_ShowLiveDlg.ShowWindow(SW_HIDE);
+	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	AfxMessageBox("对方拒绝接通");
 
 	m_bConnect = false;
@@ -247,12 +266,12 @@ void TPVOIP_P2P::onBusy(string fromID)
 {
 	//关闭
 	stopGetData();
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->removeAllUser();
-		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+		m_ShowLiveDlg->m_pDataShowView->removeAllUser();
+		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 	}
-	m_ShowLiveDlg.ShowWindow(SW_HIDE);
+	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	AfxMessageBox("对方线路忙");
 }
 
@@ -263,13 +282,20 @@ void TPVOIP_P2P::onBusy(string fromID)
  */
 void TPVOIP_P2P::onConnected(string fromID)
 {
+	
+	if (acceptNumber == 0)
+	{
+		m_pVoipManager->accept(m_strAimIP);
+		acceptNumber++;
+		RunMsg(2, "对方同意通话 已连接完毕");
+	}
 	////添加显示对方界面
-	//if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	//if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	//{
 	//	m_strAimIP = fromID;
-	//	m_ShowLiveDlg.m_pDataShowView->addUser(fromID, true);
-	//	m_ShowLiveDlg.m_pDataShowView->changeShowStyle(m_pUserManager->m_ServiceParam.m_strUserId, false);
-	//	m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+	//	m_ShowLiveDlg->m_pDataShowView->addUser(m_strAimIP, true);
+	//	m_ShowLiveDlg->m_pDataShowView->changeShowStyle(m_pUserManager->m_ServiceParam.m_strUserId, false);
+	//	m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 	//}
 	////设置插入数据
 	//m_bInsertData = true;
@@ -304,12 +330,12 @@ void TPVOIP_P2P::onHangup(string fromID)
 		}
 		m_bConnect = false;
 	}
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->removeAllUser();
-		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+		m_ShowLiveDlg->m_pDataShowView->removeAllUser();
+		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 	}
-	m_ShowLiveDlg.ShowWindow(SW_HIDE);
+	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 }
 
 /**
@@ -328,16 +354,16 @@ void TPVOIP_P2P::onError(string errorCode)
 	{
 		m_pVoipManager->hangup();
 	}
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->removeAllUser();
+		m_ShowLiveDlg->m_pDataShowView->removeAllUser();
 	}
-	m_ShowLiveDlg.ShowWindow(SW_HIDE);
+	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 	//断开连接
 	CString strErr;
 	strErr.Format("err:%s", errorCode.c_str());
 	AfxMessageBox(strErr);
-	
+
 }
 
 /**
@@ -351,20 +377,20 @@ void TPVOIP_P2P::onReceiveRealtimeData(uint8_t* data, int length)
 
 int TPVOIP_P2P::getVideoRaw(string strUserId, int w, int h, uint8_t* videoData, int videoDataLen)
 {
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->drawPic(FMT_YUV420P, m_strAimIP, w, h, videoData, videoDataLen);
+		m_ShowLiveDlg->m_pDataShowView->drawPic(FMT_YUV420P, m_strAimIP, w, h, videoData, videoDataLen);
 	}
 	return 0;
 }
 
 void TPVOIP_P2P::changeShowStyle(string strUserId)
 {
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		string strId = m_ShowLiveDlg.m_pDataShowView->changeShowStyle(strUserId, true);
-		m_ShowLiveDlg.m_pDataShowView->changeShowStyle(strId, false);
-		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+		string strId = m_ShowLiveDlg->m_pDataShowView->changeShowStyle(strUserId, true);
+		m_ShowLiveDlg->m_pDataShowView->changeShowStyle(strId, false);
+		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 	}
 }
 
@@ -392,12 +418,12 @@ void TPVOIP_P2P::stopLive()
 		}
 		m_bConnect = false;
 	}
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->removeAllUser();
-		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+		m_ShowLiveDlg->m_pDataShowView->removeAllUser();
+		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 	}
-	m_ShowLiveDlg.ShowWindow(SW_HIDE);
+	m_ShowLiveDlg->ShowWindow(SW_HIDE);
 }
 
 void TPVOIP_P2P::getLocalSoundData(char* pData, int nLength)
@@ -418,10 +444,10 @@ void TPVOIP_P2P::querySoundData(char** pData, int* nLength)
 
 void TPVOIP_P2P::addUpId()
 {
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, false);
-		m_ShowLiveDlg.m_pDataShowView->setShowPictures();
+		m_ShowLiveDlg->m_pDataShowView->addUser(m_pUserManager->m_ServiceParam.m_strUserId, false);
+		m_ShowLiveDlg->m_pDataShowView->setShowPictures();
 	}
 }
 
@@ -445,8 +471,8 @@ int TPVOIP_P2P::cropVideoRawNV12(int w, int h, uint8_t* videoData, int dataLen, 
 
 void TPVOIP_P2P::drawPic(YUV_TYPE type, int w, int h, uint8_t* videoData, int videoDataLen)
 {
-	if (m_ShowLiveDlg.m_pDataShowView != NULL)
+	if (m_ShowLiveDlg->m_pDataShowView != NULL)
 	{
-		m_ShowLiveDlg.m_pDataShowView->drawPic(type, m_pUserManager->m_ServiceParam.m_strUserId, w, h, videoData, videoDataLen);
+		m_ShowLiveDlg->m_pDataShowView->drawPic(type, m_pUserManager->m_ServiceParam.m_strUserId, w, h, videoData, videoDataLen);
 	}
 }

@@ -22,4 +22,6 @@ extern "C" {
 	__declspec(dllexport) extern void stopLive();
 	//测试回调信息
 	__declspec(dllexport) extern void BackMsg();
+	//测试回调信息
+	__declspec(dllexport) extern void accept(char* AdmIP);
 }

@@ -43,6 +43,10 @@ void IPCall(char* AdmIP)
 {
 	P2P->IPCall(AdmIP);
 }
+void accept(char* AdmIP)
+{
+	P2P->IPaccept(AdmIP);
+}
 
 
 BOOL YPLogin(char* localuserid) {
