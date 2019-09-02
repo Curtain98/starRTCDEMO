@@ -31,7 +31,13 @@
 ##### 4.配置属性 将项目默认值->配置类型 改为动态库(dll)  
 ##### 5.c/c++ 里面的优化改为 已禁用 (/Od) 否则c#无法初始化类
 ****
-![Aaron Swartz](https://github.com/Curtain98/starRTCDEMO/blob/master/Csharpe/set.png)  
+##### 禁用优化
+![Aaron Swartz](https://github.com/Curtain98/starRTCDEMO/blob/master/Csharpe/set.png) 
+##### 改为动态链接库
 ![Aaron Swartz](https://github.com/Curtain98/starRTCDEMO/blob/master/Csharpe/set2.png)  
+##### 项目接口扩展文件列表
 ![Aaron Swartz](https://github.com/Curtain98/starRTCDEMO/blob/master/Csharpe/code.png)  
+##### C#Demo
 ![Aaron Swartz](https://github.com/Curtain98/starRTCDEMO/blob/master/Csharpe/su.png)
+##### PC对PC  P2P内网方式 实例
+![Aaron Swartz](https://github.com/Curtain98/starRTCDEMO/blob/master/Csharpe/due.png)
