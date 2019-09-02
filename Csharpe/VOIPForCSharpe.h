@@ -6,20 +6,22 @@
 using namespace std;
 extern "C" {
 
-	//³õÊ¼»¯»Øµ÷C#ĞÅÏ¢
+	//åˆå§‹åŒ–å›è°ƒC#ä¿¡æ¯
 	__declspec(dllexport) extern BOOL InitBackMsg(CallBackFun pFun);
-	//µÇÂ¼
+	//ç™»å½•
 	__declspec(dllexport) extern BOOL YPLogin(char* localuserid);
-	//ºô½Ğ
+	//å‘¼å«
 	__declspec(dllexport) extern int VoipCallPerson(char* targetId, char* str);
-	//ÊÍ·Å
+	//é‡Šæ”¾
 	__declspec(dllexport) extern int DeleteVoip();
-	//IPºô½Ğ
+	//IPå‘¼å«
 	__declspec(dllexport) extern void IPCall(char* AdmIP);
-	//IPºô½Ğ³õÊ¼»¯
+	//IPå‘¼å«åˆå§‹åŒ–
 	__declspec(dllexport) extern BOOL InitIP(char* LocaIP);
-	//¹Ò¶Ï
+	//æŒ‚æ–­
 	__declspec(dllexport) extern void stopLive();
-	//²âÊÔ»Øµ÷ĞÅÏ¢
+	//æµ‹è¯•å›è°ƒä¿¡æ¯
 	__declspec(dllexport) extern void BackMsg();
+	//å•ç‹¬è°ƒç”¨accept
+	__declspec(dllexport) extern void accept(char* AdmIP);
 }
