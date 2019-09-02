@@ -17,13 +17,13 @@ TPVOIP_P2P* P2P;
 BOOL InitBackMsg(CallBackFun pFun)
 {
 		InitBack(pFun);
-			RunMsg(0, "³õÊ¼»¯»Øµ÷ĞÅÏ¢³É¹¦£¡");
+			RunMsg(0, "åˆå§‹åŒ–å›è°ƒä¿¡æ¯æˆåŠŸï¼");
 		return TRUE;
 }
 
 void BackMsg() 
 {
-	RunMsg(0, "²âÊÔ-»Øµ÷ĞÅÏ¢£¡");
+	RunMsg(0, "æµ‹è¯•-å›è°ƒä¿¡æ¯ï¼");
 }
 
 BOOL InitIP(char* LocaIP)
@@ -52,7 +52,7 @@ void accept(char* AdmIP)
 BOOL YPLogin(char* localuserid) {
 	m_pUserManager = new CUserManager();
 	CLogin login(m_pUserManager);
-	//bool bRead = login.readConfig();¡¤
+	//bool bRead = login.readConfig();Â·
 	//if (!bRead)fdf 
 	//{
 	//	//OnClose();
@@ -65,12 +65,12 @@ BOOL YPLogin(char* localuserid) {
 	bool bSuccess = login.logIn();
 	if (bSuccess)
 	{
-		//AfxMessageBox("µÇÂ¼³É¹¦");
+		//AfxMessageBox("ç™»å½•æˆåŠŸ");
 		//login.startIMServer((char*)m_pUserManager->m_strIMServerIp.c_str(), m_pUserManager->m_nIMServerPort, (char*)m_pUserManager->m_ServiceParam.m_strUserId.c_str(), (char*)m_pUserManager->m_ServiceParam.m_strAgentId.c_str(), (char*)m_pUserManager->m_strTokenId.c_str());
 	}
 	else
 	{
-		AfxMessageBox("µÇÂ¼Ê§°Ü£¬Çë¼ì²éÅäÖÃĞÅÏ¢");
+		AfxMessageBox("ç™»å½•å¤±è´¥ï¼Œè¯·æ£€æŸ¥é…ç½®ä¿¡æ¯");
 	}
 	return TRUE;
 }

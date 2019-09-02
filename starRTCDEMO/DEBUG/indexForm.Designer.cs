@@ -1,4 +1,4 @@
-﻿namespace DEBUG
+namespace DEBUG
 {
     partial class indexForm
     {
