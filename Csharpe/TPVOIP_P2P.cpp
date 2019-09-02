@@ -67,10 +67,8 @@ void TPVOIP_P2P::IPCall(char* AdmIP)
 
 }
 
-void TPVOIP_P2P::IPCallOutMsg(char* AdmIP) 
+void TPVOIP_P2P::IPaccept(char* AdmIP) 
 {
-	//添加显示对方界面
-	
 		RunMsg(1, "调用accept");
 		m_pVoipManager->accept(m_strAimIP);
 }
