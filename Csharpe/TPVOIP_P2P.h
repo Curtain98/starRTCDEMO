@@ -26,7 +26,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	 void IPCallOutMsg(char* AdmIP);
+	 void IPaccept(char* AdmIP);
 	 void IPCall(char* AdmIP);
 	 void OnBnClickedButtonCalling();
 	virtual BOOL OnInitDialog();
